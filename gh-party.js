@@ -6,14 +6,17 @@ new Vue({
         config: {},
     }},
 
+    methods: {
+
+        async loadConfigFile() {
+            const res   = await fetch('config.json');
+            this.config = await res.json();
+        },
+
+    },
+
     async created() {
-
-        // Load json config
-        const res   = await fetch('config.json');
-        const json  = await res.json();
-        this.config = json;
-
-        // Set title from config
+        await this.loadConfigFile();
         document.title = this.config.title;
     },
 
