@@ -1,9 +1,9 @@
 {
-    "title": "gh-party",
 
-    "github": {
-        "user": "memowe",
-        "repository": "gh-party",
-        "pagesUrl": "https://mirko.westermeier.de/gh-party/"
-    }
+    "pages": {
+        "sitemapYaml":  "sitemap.yml",
+        "fetchPrefix":  "Content"
+    },
+
+    "title": "md-party"
 }
