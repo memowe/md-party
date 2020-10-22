@@ -25,12 +25,9 @@ new Vue({
         async loadPages() {
             for (const name of this.sitemap) {
                 const path = '/' + this.pathify(name) + '.md';
-                fetch(this.config.pages.fetchPrefix + path).then(res => res.text())
-                    .then(content => ({
-                        name: name,
-                        meta: yamlFront.loadFront(content),
-                        html: marked(content),
-                    }))
+                fetch(this.config.pages.fetchPrefix + path)
+                    .then(res => res.text())
+                    .then(content => ({name: name, html: marked(content)}))
                     .then(data => this.pages[name] = data);
             }
         },
