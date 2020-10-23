@@ -1,16 +1,57 @@
+// Utility methods
+Vue.mixin({methods: {
+    toPath:     str => str.replace(/[^a-z0-9]+/i, '_'),
+    hashPage:   ()  => window.location.hash.substr(1), // 0: #
+}});
+
+// Manual router link
+Vue.component('VLink', {
+    template:   `<a :href="'#' + toPath(to)" :class="{active: active}">{{ to }}</a>`,
+    props:      ['to'],
+    data:       () => ({active: false}),
+    methods:    {sync() {this.active = this.toPath(this.to) === this.hashPage()}},
+    created()   {
+        window.addEventListener('hashchange', this.sync);
+        this.sync();
+    },
+})
+
+// Let's get the party started!
 new Vue({
     name: 'MDParty',
     el: '#app',
+
+    template: `
+        <div id="md-party">
+            <nav>
+                <v-link v-for="page in sitemap" :key="page" :to="page"/>
+            </nav>
+            <main>
+                {{ page }}
+            </main>
+        </div>
+    `,
 
     data() { return {
         config: {},
         pages: {},
         sitemap: [],
+        page: 'Loading',
     }},
 
     methods: {
 
-        pathify: name => name.replace(/[^a-z0-9]+/i, '_'),
+        homePath() {
+            return this.toPath(this.sitemap[0]);
+        },
+
+        pathName(p) {
+            return this.sitemap.find(n => this.toPath(n) === p);
+        },
+
+        syncPage() {
+            this.page = this.pathName(this.hashPage()) || 'Not found';
+        },
 
         async loadConfigFile() {
             const res   = await fetch('config.json');
@@ -24,7 +65,7 @@ new Vue({
 
         async loadPages() {
             for (const name of this.sitemap) {
-                const path = '/' + this.pathify(name) + '.md';
+                const path = '/' + this.toPath(name) + '.md';
                 fetch(this.config.pages.fetchPrefix + path)
                     .then(res => res.text())
                     .then(content => ({name: name, html: marked(content)}))
@@ -34,10 +75,19 @@ new Vue({
     },
 
     async created() {
+
+        // Load config and page data
         await this.loadConfigFile();
         await this.loadSiteMap();
         await this.loadPages();
         document.title = this.config.title;
+
+        // Setup "navigation"
+        window.addEventListener('hashchange', this.syncPage);
+        this.syncPage();
+
+        // Go to home page
+        if (! this.hashPage()) window.location.hash = '#' + this.homePath();
     },
 
 })
