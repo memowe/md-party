@@ -24,7 +24,7 @@ new Vue({
             <nav>
                 <v-link v-for="page in sitemap" :key="page" :to="page"/>
             </nav>
-            <main v-html="pageHTML"/></main>
+            <main v-html="pageHTML"></main>
         </div>
     `,
 
