@@ -40,6 +40,11 @@ new Vue({
     }},
 
     computed: {
+
+        homePath() {
+            return this.toPath(this.sitemap[0]);
+        },
+
         pageHTML() {
             if (this.pages[this.page])
                 return this.pages[this.page].html;
@@ -48,10 +53,6 @@ new Vue({
     },
 
     methods: {
-
-        homePath() {
-            return this.toPath(this.sitemap[0]);
-        },
 
         pathName(p) {
             return this.sitemap.find(n => this.toPath(n) === p);
@@ -96,7 +97,7 @@ new Vue({
         this.syncPage();
 
         // Go to home page
-        if (! this.hashPage()) window.location.hash = '#' + this.homePath();
+        if (! this.hashPage()) window.location.hash = '#' + this.homePath;
     },
 
 })
