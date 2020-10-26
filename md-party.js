@@ -27,9 +27,7 @@ new Vue({
             <nav>
                 <v-link v-for="page in sitemap" :key="page" :to="page"/>
             </nav>
-            <main>
-                {{ page }}
-            </main>
+            <main v-html="pageHTML"/></main>
         </div>
     `,
 
@@ -40,6 +38,14 @@ new Vue({
         page: undefined,
         loading: true,
     }},
+
+    computed: {
+        pageHTML() {
+            if (this.pages[this.page])
+                return this.pages[this.page].html;
+            return '<p id="message">Page not found.</p>';
+        },
+    },
 
     methods: {
 
