@@ -2,18 +2,15 @@
 Vue.mixin({methods: {
     toPath:     str => str.replace(/[^a-z0-9]+/i, '_'),
     hashPage:   ()  => window.location.hash.substr(1), // 0: #
-}});
+}})
 
-// Manual router link
+// Manual router link that is aware of the current "page"
 Vue.component('VLink', {
     template:   `<a :href="'#' + toPath(to)" :class="{active: active}">{{ to }}</a>`,
     props:      ['to'],
     data:       () => ({active: false}),
     methods:    {sync() {this.active = this.toPath(this.to) === this.hashPage()}},
-    created()   {
-        window.addEventListener('hashchange', this.sync);
-        this.sync();
-    },
+    created()   {window.addEventListener('hashchange', this.sync); this.sync()},
 })
 
 // Let's get the party started!
@@ -85,20 +82,17 @@ new Vue({
     },
 
     async created() {
-
-        // Load config and page data
         this.config     = await this.loadConfigFile();
         this.sitemap    = await this.loadSiteMap();
         this.pages      = await this.loadPages();
-        this.loading = false;
-        document.title = this.config.title;
+        this.loading    = false;
+        document.title  = this.config.title;
 
-        // Setup "navigation"
+        // Set up "navigation"
         window.addEventListener('hashchange', this.syncPage);
         this.syncPage();
 
         // Go to home page
         if (! this.hashPage()) window.location.hash = '#' + this.homePath;
     },
-
 })
