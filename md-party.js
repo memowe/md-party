@@ -22,7 +22,8 @@ new Vue({
     el: '#app',
 
     template: `
-        <div id="md-party">
+        <p v-if="loading" id="message">Loading...</p>
+        <div v-else id="md-party">
             <nav>
                 <v-link v-for="page in sitemap" :key="page" :to="page"/>
             </nav>
@@ -36,7 +37,8 @@ new Vue({
         config: {},
         pages: {},
         sitemap: [],
-        page: 'Loading',
+        page: undefined,
+        loading: true,
     }},
 
     methods: {
@@ -80,6 +82,7 @@ new Vue({
         await this.loadConfigFile();
         await this.loadSiteMap();
         await this.loadPages();
+        this.loading = false;
         document.title = this.config.title;
 
         // Setup "navigation"
