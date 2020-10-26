@@ -62,14 +62,16 @@ new Vue({
             this.page = this.pathName(this.hashPage()) || 'Not found';
         },
 
-        async loadConfigFile() {
-            const res   = await fetch('config.json');
-            this.config = await res.json();
+        loadConfigFile() {
+            return fetch('config.json')
+                .then(res => res.json())
+                .then(json => this.config = json);
         },
 
-        async loadSiteMap() {
-            const res       = await fetch(this.config.pages.sitemapYaml);
-            this.sitemap    = jsyaml.load(await res.text());
+        loadSiteMap() {
+            return fetch(this.config.pages.sitemapYaml)
+                .then(res => res.text())
+                .then(text => this.sitemap = jsyaml.load(text));
         },
 
         loadPages() {
