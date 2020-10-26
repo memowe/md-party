@@ -65,13 +65,12 @@ new Vue({
         loadConfigFile() {
             return fetch('config.json')
                 .then(res => res.json())
-                .then(json => this.config = json);
         },
 
         loadSiteMap() {
             return fetch(this.config.pages.sitemapYaml)
                 .then(res => res.text())
-                .then(text => this.sitemap = jsyaml.load(text));
+                .then(yaml => jsyaml.load(yaml));
         },
 
         loadPages() {
@@ -79,18 +78,18 @@ new Vue({
                 const path = '/' + this.toPath(name) + '.md';
                 return fetch(this.config.pages.fetchPrefix + path)
                     .then(res => res.text())
-                    .then(content => ({name: name, html: marked(content)}))
-                    .then(data => this.pages[name] = data);
-            }));
+                    .then(md => ({name: name, html: marked(md)}))
+                    .then(data => [data.name, data]);
+            })).then(results => Object.fromEntries(new Map(results)));
         },
     },
 
     async created() {
 
         // Load config and page data
-        await this.loadConfigFile();
-        await this.loadSiteMap();
-        await this.loadPages();
+        this.config     = await this.loadConfigFile();
+        this.sitemap    = await this.loadSiteMap();
+        this.pages      = await this.loadPages();
         this.loading = false;
         document.title = this.config.title;
 
