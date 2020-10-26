@@ -65,14 +65,14 @@ new Vue({
             this.sitemap    = jsyaml.load(await res.text());
         },
 
-        async loadPages() {
-            for (const name of this.sitemap) {
+        loadPages() {
+            return Promise.all(this.sitemap.map(name => {
                 const path = '/' + this.toPath(name) + '.md';
-                fetch(this.config.pages.fetchPrefix + path)
+                return fetch(this.config.pages.fetchPrefix + path)
                     .then(res => res.text())
                     .then(content => ({name: name, html: marked(content)}))
                     .then(data => this.pages[name] = data);
-            }
+            }));
         },
     },
 
