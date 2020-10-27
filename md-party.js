@@ -12,19 +12,28 @@ new Vue({
     template: `
         <p v-if="loading" id="message">Loading...</p>
         <div v-else id="md-party">
+
             <header v-if="layout.header" v-html="layout.header.html"></header>
+
             <nav>
                 <span id="nav-title">{{ config.title }}</span>
-                <a
-                    v-for="page in sitemap"
-                    :key="page"
-                    :href="'#' + toPath(page)"
-                    :class="{active: toPath(page) === hashPage()}"
-                >{{ page }}</a>
+                <ul>
+                    <li
+                        v-for="page in sitemap"
+                        :key="page"
+                        :href="'#' + toPath(page)"
+                        :class="{active: toPath(page) === hashPage()}"
+                    >
+                        <a :href="'#' + toPath(page)">{{ page }}</a>
+                    </li>
+                </ul>
             </nav>
+
             <main v-if="pages[page]" v-html="pages[page].html"></main>
             <p v-else id="message">Page not found</p>
+
             <footer v-if="layout.footer" v-html="layout.footer.html"></footer>
+
         </div>
     `,
 
