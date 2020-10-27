@@ -54,6 +54,7 @@ new Vue({
 
         syncPage() {
             this.page = this.pathName(this.hashPage()) || 'Not found';
+            document.title = this.page + ' - ' + this.config.title;
         },
 
         loadConfigFile() {
@@ -101,7 +102,6 @@ new Vue({
         this.pages      = await this.loadPages();
         this.layout     = await this.loadLayout();
         this.loading    = false;
-        document.title  = this.config.title;
 
         // Set up "navigation"
         window.addEventListener('hashchange', this.syncPage);
