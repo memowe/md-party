@@ -1,1 +1,31 @@
-li.active { font-weight: bold }
+nav li.active { font-weight: bold }
+
+html, body, #md-party {
+    height: 100vh;
+    margin: 0;
+}
+
+#md-party {
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    flex: 0 0;
+    background-color: wheat;
+}
+
+nav {
+    flex: 0 0;
+    background-color: thistle;
+}
+
+main {
+    flex: 1 0;
+    background-color: aliceblue;
+}
+
+footer {
+    flex: 0 0;
+    background-color: beige;
+}
