@@ -22,7 +22,8 @@ new Vue({
                     :class="{active: toPath(page) === hashPage()}"
                 >{{ page }}</a>
             </nav>
-            <main v-html="pageHTML"></main>
+            <main v-if="pages[page]" v-html="pages[page].html"></main>
+            <p v-else id="message">Page not found</p>
             <footer v-if="layout.footer" v-html="layout.footer.html"></footer>
         </div>
     `,
@@ -35,19 +36,6 @@ new Vue({
         layout: {},
         loading: true,
     }},
-
-    computed: {
-
-        homePath() {
-            return this.toPath(this.sitemap[0]);
-        },
-
-        pageHTML() {
-            if (this.pages[this.page])
-                return this.pages[this.page].html;
-            return '<p id="message">Page not found.</p>';
-        },
-    },
 
     methods: {
 
@@ -110,7 +98,8 @@ new Vue({
         window.addEventListener('hashchange', this.syncPage);
         this.syncPage();
 
-        // Go to home page
-        if (! this.hashPage()) window.location.hash = '#' + this.homePath;
+        // Go to home page (first page of the sitemap)
+        if (! this.hashPage())
+            window.location.hash = '#' + this.toPath(this.sitemap[0]);
     },
 })
