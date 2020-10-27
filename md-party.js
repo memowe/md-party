@@ -14,6 +14,7 @@ new Vue({
         <div v-else id="md-party">
             <header v-if="layout.header" v-html="layout.header.html"></header>
             <nav>
+                <span id="nav-title">{{ config.title }}</span>
                 <a
                     v-for="page in sitemap"
                     :key="page"
