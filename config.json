@@ -6,9 +6,7 @@
     },
 
     "layout": {
-        "parts": {
-            "footer": "footer.md"
-        },
+        "parts": ["footer"],
         "css": "style.css",
         "fetchPrefix": "Layout"
     },

@@ -48,11 +48,11 @@ new Vue({
     methods: {
 
         addCSSFile() {
-            if (this.config.layout.css) {
-                const path  = this.config.layout.css;
+            const lo = this.config.layout;
+            if (lo.css) {
                 const style = document.createElement('link');
                 style.rel   = 'stylesheet';
-                style.href  = this.config.layout.fetchPrefix + '/' + path;
+                style.href  = lo.fetchPrefix + '/' + lo.css;
                 document.head.append(style);
             }
         },
@@ -89,19 +89,19 @@ new Vue({
         },
 
         loadPages() {
-            return this.loadMarkdownResources(this.sitemap.map(name => {
-                const path  = '/' + this.toPath(name) + '.md';
-                return {name: name, url: this.config.pages.fetchPrefix + path};
-            }));
+            const ps = this.config.pages;
+            return this.loadMarkdownResources(this.sitemap.map(name => ({
+                name: name,
+                url: ps.fetchPrefix + '/' + this.toPath(name) + '.md',
+            })));
         },
 
         loadLayout() {
-            return this.loadMarkdownResources(
-                Object.keys(this.config.layout.parts).map(part => {
-                    const path = '/' + this.config.layout.parts[part];
-                    return {name: part, url: this.config.layout.fetchPrefix + path};
-                })
-            );
+            const lo = this.config.layout;
+            return this.loadMarkdownResources(lo.parts.map(part => ({
+                name: part,
+                url: lo.fetchPrefix + '/' + part + '.md',
+            })));
         },
     },
 
