@@ -70,20 +70,22 @@ new Vue({
                 .then(yaml => jsyaml.load(yaml));
         },
 
-        loadMarkdown(name, url) {
-            return fetch(url)
-                .then(res => res.text())
-                .then(md => ({name: name, html: marked(md)}));
-        },
-
-        loadPages() {
-            return Promise.all(this.sitemap.map(name => {
-                    const path  = '/' + this.toPath(name) + '.md';
-                    const url   = this.config.pages.fetchPrefix + path;
-                    return this.loadMarkdown(name, url);
+        // expects an array of {name, url}
+        loadMarkdownResources(urls) {
+            return Promise.all(urls.map(url => {
+                return fetch(url.url)
+                    .then(res => res.text())
+                    .then(md => ({name: url.name, html: marked(md)}));
             }))
                 .then(results => results.map(data => [data.name, data]))
                 .then(pairs => Object.fromEntries(new Map(pairs)));
+        },
+
+        loadPages() {
+            return this.loadMarkdownResources(this.sitemap.map(name => {
+                const path  = '/' + this.toPath(name) + '.md';
+                return {name: name, url: this.config.pages.fetchPrefix + path};
+            }));
         },
     },
 
