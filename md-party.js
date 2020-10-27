@@ -33,7 +33,6 @@ new Vue({
             <p v-else id="message">Page not found</p>
 
             <footer v-if="layout.footer" v-html="layout.footer.html"></footer>
-
         </div>
     `,
 
@@ -47,6 +46,16 @@ new Vue({
     }},
 
     methods: {
+
+        addCSSFile() {
+            if (this.config.layout.css) {
+                const path  = this.config.layout.css;
+                const style = document.createElement('link');
+                style.rel   = 'stylesheet';
+                style.href  = this.config.layout.fetchPrefix + '/' + path;
+                document.head.append(style);
+            }
+        },
 
         pathName(p) {
             return this.sitemap.find(n => this.toPath(n) === p);
@@ -101,7 +110,8 @@ new Vue({
         this.sitemap    = await this.loadSiteMap();
         this.pages      = await this.loadPages();
         this.layout     = await this.loadLayout();
-        this.loading    = false;
+        this.addCSSFile();
+        this.loading = false;
 
         // Set up "navigation"
         window.addEventListener('hashchange', this.syncPage);
