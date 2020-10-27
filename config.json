@@ -5,5 +5,12 @@
         "fetchPrefix":  "Content"
     },
 
+    "layout": {
+        "parts": {
+            "footer": "footer.md"
+        },
+        "fetchPrefix": "Layout"
+    },
+
     "title": "md-party"
 }

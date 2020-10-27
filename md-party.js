@@ -21,10 +21,12 @@ new Vue({
     template: `
         <p v-if="loading" id="message">Loading...</p>
         <div v-else id="md-party">
+            <header v-if="layout.header" v-html="layout.header.html"></header>
             <nav>
                 <v-link v-for="page in sitemap" :key="page" :to="page"/>
             </nav>
             <main v-html="pageHTML"></main>
+            <footer v-if="layout.footer" v-html="layout.footer.html"></footer>
         </div>
     `,
 
@@ -33,6 +35,7 @@ new Vue({
         pages: {},
         sitemap: [],
         page: undefined,
+        layout: {},
         loading: true,
     }},
 
@@ -87,12 +90,22 @@ new Vue({
                 return {name: name, url: this.config.pages.fetchPrefix + path};
             }));
         },
+
+        loadLayout() {
+            return this.loadMarkdownResources(
+                Object.keys(this.config.layout.parts).map(part => {
+                    const path = '/' + this.config.layout.parts[part];
+                    return {name: part, url: this.config.layout.fetchPrefix + path};
+                })
+            );
+        },
     },
 
     async created() {
         this.config     = await this.loadConfigFile();
         this.sitemap    = await this.loadSiteMap();
         this.pages      = await this.loadPages();
+        this.layout     = await this.loadLayout();
         this.loading    = false;
         document.title  = this.config.title;
 
