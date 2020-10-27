@@ -84,7 +84,12 @@ new Vue({
             return Promise.all(urls.map(url => {
                 return fetch(url.url)
                     .then(res => res.text())
-                    .then(md => ({name: url.name, html: marked(md)}));
+                    .then(md => yamlFront.loadFront(md))
+                    .then(fm => ({
+                        name: url.name,
+                        meta: fm,
+                        html: marked(fm.__content),
+                    }));
             }))
                 .then(results => results.map(data => [data.name, data]))
                 .then(pairs => Object.fromEntries(new Map(pairs)));
