@@ -4,15 +4,6 @@ Vue.mixin({methods: {
     hashPage:   ()  => window.location.hash.substr(1), // 0: #
 }})
 
-// Manual router link that is aware of the current "page"
-Vue.component('VLink', {
-    template:   `<a :href="'#' + toPath(to)" :class="{active: active}">{{ to }}</a>`,
-    props:      ['to'],
-    data:       () => ({active: false}),
-    methods:    {sync() {this.active = this.toPath(this.to) === this.hashPage()}},
-    created()   {window.addEventListener('hashchange', this.sync); this.sync()},
-})
-
 // Let's get the party started!
 new Vue({
     name: 'MDParty',
@@ -23,7 +14,12 @@ new Vue({
         <div v-else id="md-party">
             <header v-if="layout.header" v-html="layout.header.html"></header>
             <nav>
-                <v-link v-for="page in sitemap" :key="page" :to="page"/>
+                <a
+                    v-for="page in sitemap"
+                    :key="page"
+                    :href="'#' + toPath(page)"
+                    :class="{active: toPath(page) === hashPage()}"
+                >{{ page }}</a>
             </nav>
             <main v-html="pageHTML"></main>
             <footer v-if="layout.footer" v-html="layout.footer.html"></footer>
