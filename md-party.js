@@ -16,17 +16,18 @@ new Vue({
             <header v-if="layout.header" v-html="layout.header.html"></header>
 
             <nav>
-                <span id="nav-title">{{ config.title }}</span>
-                <ul>
-                    <li
+                <label for="nav-burger" id="nav-burger-icon">&#9776;</label>
+                <input type="checkbox" id="nav-burger">
+
+                <div id="nav-items">
+                    <span class="nav-title">{{ config.title }}</span>
+                    <a
                         v-for="page in sitemap"
                         :key="page"
                         :href="'#' + toPath(page)"
-                        :class="{active: toPath(page) === hashPage()}"
-                    >
-                        <a :href="'#' + toPath(page)">{{ page }}</a>
-                    </li>
-                </ul>
+                        :class="{'nav-item': true, active: toPath(page) === hashPage()}"
+                    >{{ page }}</a>
+                </div>
             </nav>
 
             <main v-if="pages[page]" v-html="pages[page].html"></main>
