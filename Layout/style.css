@@ -3,6 +3,12 @@ html, body, #md-party {
     margin: 0;
 }
 
+/* Basic typography */
+
+body {
+    font-family: sans-serif;
+}
+
 /* Vertical page parts */
 
 #md-party { display: flex; flex-direction: column }
@@ -11,10 +17,42 @@ nav     { flex: 0 0 }
 main    { flex: 1 0 }
 footer  { flex: 0 0 }
 
-/* Navigation: general rules */
+/* Navigation: desktop appearance */
+
+nav #nav-burger-icon,
+nav #nav-burger {
+    display: none;
+}
+
+nav {
+    width: 100%;
+    position: sticky;
+    top: 0;
+    background: #eee;
+}
+
+nav #nav-items {
+    display: flex;
+}
+
+nav .nav-title,
+nav .nav-item {
+    padding: .5em 1em;
+    text-align: center;
+}
+
+nav .nav-title {
+    color: #999;
+    font-weight: bold;
+}
 
 nav .nav-item.active {
-    font-weight: bold;
+    background: white;
+}
+
+nav a {
+    color: black;
+    text-decoration: none;
 }
 
 /* Footer */
