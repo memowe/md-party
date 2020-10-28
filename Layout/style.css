@@ -20,7 +20,6 @@ footer  { flex: 0 0 }
 /* Navigation: desktop appearance */
 
 nav #nav-burger-icon,
-nav #nav-burger-title,
 nav #nav-burger {
     display: none;
 }
@@ -35,17 +34,17 @@ nav {
 }
 
 nav #nav-items {
-    display: flex;
+    display: inline-block;
 }
 
-nav #nav-items-title,
+nav #nav-title,
 nav .nav-item {
+    display: inline-block;
     padding: .5em 1em;
     text-align: center;
 }
 
-nav #nav-burger-title,
-nav #nav-items-title {
+nav #nav-title {
     color: #999;
     font-weight: bold;
 }
@@ -65,15 +64,11 @@ nav a {
 
     nav #nav-burger-icon {
         display: inline-block;
-        padding: .5em 1em;
+        padding: .5em 0 .5em 1em;
     }
 
-    nav #nav-burger-title {
+    nav #nav-title {
         display: inline-block;
-    }
-
-    nav #nav-items-title {
-        display: none;
     }
 
     nav #nav-items {

@@ -18,10 +18,9 @@ new Vue({
             <nav>
                 <label for="nav-burger" id="nav-burger-icon">&#9776;</label>
                 <input type="checkbox" id="nav-burger">
-                <span id="nav-burger-title">{{ config.title }}</span>
+                <span id="nav-title">{{ config.title }}</span>
 
                 <div id="nav-items">
-                    <span id="nav-items-title">{{ config.title }}</span>
                     <a
                         v-for="page in sitemap"
                         :key="page"
