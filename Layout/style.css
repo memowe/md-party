@@ -61,7 +61,7 @@ nav a {
 
 /* Navigation: mobile appearance with burger */
 
-@media screen and (max-width: 48em) {
+@media (max-width: 48em) {
 
     nav #nav-burger-icon {
         display: inline-block;
