@@ -5,27 +5,9 @@ html, body, #md-party {
     margin: 0;
 }
 
-#md-party {
-    display: flex;
-    flex-direction: column;
-}
-
-header {
-    flex: 0 0;
-    background-color: wheat;
-}
-
-nav {
-    flex: 0 0;
-    background-color: thistle;
-}
-
-main {
-    flex: 1 0;
-    background-color: aliceblue;
-}
-
-footer {
-    flex: 0 0;
-    background-color: beige;
-}
+/* Vertical page parts */
+#md-party { display: flex; flex-direction: column }
+header  { flex: 0 0 }
+nav     { flex: 0 0 }
+main    { flex: 1 0 }
+footer  { flex: 0 0 }
