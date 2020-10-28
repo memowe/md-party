@@ -65,6 +65,8 @@ new Vue({
         syncPage() {
             this.page = this.pathName(this.hashPage()) || 'Not found';
             document.title = this.page + ' - ' + this.config.title;
+            const navCheck = document.getElementById('nav-burger');
+            if (navCheck) navCheck.checked = false;
         },
 
         loadConfigFile() {
