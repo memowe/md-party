@@ -13,8 +13,6 @@ new Vue({
         <p v-if="loading" id="message">Loading...</p>
         <div v-else id="md-party">
 
-            <header v-if="layout.header" v-html="layout.header.html"></header>
-
             <nav>
                 <span id="nav-title">{{ config.title }}</span>
 
