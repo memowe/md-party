@@ -13,19 +13,19 @@ new Vue({
         <p v-if="loading" id="message">Loading...</p>
         <div v-else id="md-party">
 
-            <header v-if="layout.header" v-html="layout.header.html"></header>
-
             <nav>
                 <span id="nav-title">{{ config.title }}</span>
-                <ul>
+
+                <div id="nav-burger">
+                    <button @click="burgerMenu = ! burgerMenu">&#9776;</button>
+                </div>
+
+                <ul id="nav-items" :class="{'active-burger': burgerMenu}">
                     <li
                         v-for="page in sitemap"
                         :key="page"
-                        :href="'#' + toPath(page)"
                         :class="{active: toPath(page) === hashPage()}"
-                    >
-                        <a :href="'#' + toPath(page)">{{ page }}</a>
-                    </li>
+                    ><a :href="'#' + toPath(page)">{{ page }}</a></li>
                 </ul>
             </nav>
 
@@ -43,6 +43,7 @@ new Vue({
         page: undefined,
         layout: {},
         loading: true,
+        burgerMenu: false,
     }},
 
     methods: {
@@ -64,6 +65,7 @@ new Vue({
         syncPage() {
             this.page = this.pathName(this.hashPage()) || 'Not found';
             document.title = this.page + ' - ' + this.config.title;
+            this.burgerMenu = false;
         },
 
         loadConfigFile() {
