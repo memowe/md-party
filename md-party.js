@@ -15,7 +15,15 @@ new Vue({
         <div v-else id="md-party">
 
             <nav>
-                <span id="nav-title">{{ config.title }}</span>
+                <a
+                    v-if="config.navigation.useTitleAsHome"
+                    id="nav-title"
+                    :href="'#' + this.toPath(this.sitemap[0])"
+                >{{ config.title }}</a>
+                <span
+                    v-else
+                    id="nav-title"
+                >{{ config.title }}</span>
 
                 <div id="nav-burger">
                     <button @click="burgerMenu = ! burgerMenu">&#9776;</button>
@@ -23,7 +31,7 @@ new Vue({
 
                 <ul id="nav-items" :class="{'active-burger': burgerMenu}">
                     <li
-                        v-for="page in sitemap"
+                        v-for="page in naviPages"
                         :key="page"
                         :class="{active: toPath(page) === hashPage()}"
                     ><a :href="'#' + toPath(page)">{{ page }}</a></li>
@@ -46,6 +54,14 @@ new Vue({
         loading: true,
         burgerMenu: false,
     }},
+
+    computed: {
+        naviPages() {
+            return this.sitemap.slice(
+                this.config.navigation.useTitleAsHome ? 1 : 0
+            );
+        }
+    },
 
     methods: {
 
