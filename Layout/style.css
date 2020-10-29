@@ -15,6 +15,7 @@ body {
 header  { flex: 0 0 }
 nav     { flex: 0 0 }
 main    { flex: 1 0 }
+#message{ flex: 1 0 }
 footer  { flex: 0 0 }
 
 /* Navigation: basic and desktop appearance */
@@ -120,8 +121,16 @@ nav #nav-items .active {
 
 /* Main content area */
 
-main {
-    padding-top: 2.5em; /* Leave room for nav */
+main, #message {
+    padding-top: 3.5em; /* Leave room for nav */
+    margin: 0 auto;
+    width: calc(36em + 15%);
+}
+
+@media (max-width: 48em) {
+    main, #message {
+        width: calc(100% - 4em);
+    }
 }
 
 /* Footer */
