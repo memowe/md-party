@@ -20,14 +20,13 @@ new Vue({
                 <input type="checkbox" id="nav-burger">
                 <span id="nav-title">{{ config.title }}</span>
 
-                <div id="nav-items">
-                    <a
+                <ul id="nav-items">
+                    <li
                         v-for="page in sitemap"
                         :key="page"
-                        :href="'#' + toPath(page)"
                         :class="{'nav-item': true, active: toPath(page) === hashPage()}"
-                    >{{ page }}</a>
-                </div>
+                    ><a :href="'#' + toPath(page)">{{ page }}</a></li>
+                </ul>
             </nav>
 
             <main v-if="pages[page]" v-html="pages[page].html"></main>

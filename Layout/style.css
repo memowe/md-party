@@ -33,12 +33,14 @@ nav {
     opacity: .97;
 }
 
-nav #nav-items {
+nav #nav-items,
+nav #nav-items .nav-item {
     display: inline-block;
+    margin: 0;
 }
 
 nav #nav-title,
-nav .nav-item {
+nav #nav-items a {
     display: inline-block;
     padding: .5em 1em;
     text-align: center;
