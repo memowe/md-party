@@ -69,6 +69,7 @@ nav #nav-items li {
     display: inline-block;
     margin: 0;
     padding: 0;
+    text-align: center;
 }
 
 nav #nav-items li::before {
@@ -104,6 +105,7 @@ nav #nav-items .active {
     nav #nav-items.active-burger li,
     nav #nav-items.active-burger a {
         display: block;
+        text-align: left;
     }
 
     nav #nav-burger { padding: 0 }
