@@ -16,15 +16,17 @@ new Vue({
             <header v-if="layout.header" v-html="layout.header.html"></header>
 
             <nav>
-                <label for="nav-burger" id="nav-burger-icon">&#9776;</label>
-                <input type="checkbox" id="nav-burger">
                 <span id="nav-title">{{ config.title }}</span>
 
-                <ul id="nav-items">
+                <div id="nav-burger">
+                    <button @click="burgerMenu = ! burgerMenu">&#9776;</button>
+                </div>
+
+                <ul id="nav-items" :class="{'active-burger': burgerMenu}">
                     <li
                         v-for="page in sitemap"
                         :key="page"
-                        :class="{'nav-item': true, active: toPath(page) === hashPage()}"
+                        :class="{active: toPath(page) === hashPage()}"
                     ><a :href="'#' + toPath(page)">{{ page }}</a></li>
                 </ul>
             </nav>
@@ -43,6 +45,7 @@ new Vue({
         page: undefined,
         layout: {},
         loading: true,
+        burgerMenu: false,
     }},
 
     methods: {
@@ -64,8 +67,7 @@ new Vue({
         syncPage() {
             this.page = this.pathName(this.hashPage()) || 'Not found';
             document.title = this.page + ' - ' + this.config.title;
-            const navCheck = document.getElementById('nav-burger');
-            if (navCheck) navCheck.checked = false;
+            this.burgerMenu = false;
         },
 
         loadConfigFile() {

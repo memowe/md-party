@@ -17,12 +17,7 @@ nav     { flex: 0 0 }
 main    { flex: 1 0 }
 footer  { flex: 0 0 }
 
-/* Navigation: desktop appearance */
-
-nav #nav-burger-icon,
-nav #nav-burger {
-    display: none;
-}
+/* Navigation: basic and desktop appearance */
 
 nav {
     width: 100%;
@@ -31,59 +26,93 @@ nav {
     background: #eee;
     box-shadow: 0 0 5px rgba(0,0,0,.5);
     opacity: .97;
-}
-
-nav #nav-items,
-nav #nav-items .nav-item {
-    display: inline-block;
-    margin: 0;
-}
-
-nav #nav-title,
-nav #nav-items a {
-    display: inline-block;
-    padding: .5em 1em;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 nav #nav-title {
-    color: #999;
+    flex: 0 0 auto;
+    order: 1;
+}
+
+nav #nav-items {
+    flex: 1 0 auto;
+    order: 2;
+}
+
+nav #nav-burger {
+    flex: 0 0 auto;
+    order: 3;
+    padding: .5em 1em;
+}
+nav #nav-burger button { display: none }
+
+/* Navigation: title */
+
+nav #nav-title {
+    display: inline-block;
+    padding: .5em 1em;
     font-weight: bold;
+    color: #999;
+    text-decoration: none;
 }
 
-nav .nav-item.active {
-    background: white;
+nav a#nav-title {
+    color: black;
 }
 
-nav a {
+/* Navigation: desktop navigation items */
+
+nav #nav-items,
+nav #nav-items li {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+nav #nav-items li::before {
+    display: none;
+}
+
+nav #nav-items a {
+    display: inline-block;
+    padding: .5em 1em;
     color: black;
     text-decoration: none;
+}
+
+nav #nav-items .active {
+    background: white;
 }
 
 /* Navigation: mobile appearance with burger */
 
 @media (max-width: 48em) {
 
-    nav #nav-burger-icon {
-        display: inline-block;
-        padding: .5em 0 .5em 1em;
+    nav #nav-burger button { display: inline-block }
+
+    nav { flex-wrap: wrap }
+
+    nav #nav-items { display: none }
+    nav #nav-items.active-burger {
+        display: block;
+        width: 100%;
+        order: 3;
     }
 
-    nav #nav-title {
-        display: inline-block;
-    }
-
-    nav #nav-items {
-        display: none;
-    }
-
-    nav #nav-burger:checked ~ #nav-items {
+    nav #nav-items.active-burger li,
+    nav #nav-items.active-burger a {
         display: block;
     }
 
-    nav #nav-burger:checked ~ #nav-items .nav-item {
-        display: block;
-        text-align: left;
+    nav #nav-burger { padding: 0 }
+    nav #nav-burger button {
+        border: none;
+        outline: none;
+        padding: .5em 1em;
+        font-size: 1em;
+        cursor: pointer;
     }
 }
 
