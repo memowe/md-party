@@ -6,8 +6,12 @@ html, body, #md-party {
 /* Basic typography */
 
 body {
+    color: #333;
     font-family: sans-serif;
 }
+
+body a { color: black }
+body a:visited { color: #666 }
 
 /* Vertical page parts */
 
