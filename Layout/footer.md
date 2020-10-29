@@ -1,6 +1,6 @@
-&copy; [\@memowe][mgh].
+&copy; [memowe][mgh]
 
-Orchestrated by [md-party][mdp].
+Orchestrated by [md-party][mdp]
 
 [mgh]: https://github.com/memowe
 [mdp]: https://github.com/memowe/md-party
