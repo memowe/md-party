@@ -7,7 +7,6 @@
 
     "layout": {
         "parts": ["footer"],
-        "css": "style.css",
         "fetchPrefix": "Layout"
     },
 

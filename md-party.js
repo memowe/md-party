@@ -48,16 +48,6 @@ new Vue({
 
     methods: {
 
-        addCSSFile() {
-            const lo = this.config.layout;
-            if (lo.css) {
-                const style = document.createElement('link');
-                style.rel   = 'stylesheet';
-                style.href  = lo.fetchPrefix + '/' + lo.css;
-                document.head.append(style);
-            }
-        },
-
         pathName(p) {
             return this.sitemap.find(n => this.toPath(n) === p);
         },
@@ -117,7 +107,6 @@ new Vue({
         this.sitemap    = await this.loadSiteMap();
         this.pages      = await this.loadPages();
         this.layout     = await this.loadLayout();
-        this.addCSSFile();
         this.loading = false;
 
         // Set up "navigation"
