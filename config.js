@@ -1,4 +1,4 @@
-{
+var mdPartyConfig = {
 
     "pages": {
         "sitemapYaml":  "sitemap.yml",
@@ -6,4 +6,4 @@
     },
 
     "title": "md-party"
-}
+};

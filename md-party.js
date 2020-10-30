@@ -1,5 +1,6 @@
 // Utility methods
 Vue.mixin({methods: {
+    loadConfig: ()  => mdPartyConfig,
     toPath:     str => str.replace(/[^a-z0-9]+/i, '_'),
     hashPage:   ()  => window.location.hash.substr(1), // 0: #
 }})
@@ -37,7 +38,7 @@ new Vue({
     `,
 
     data() { return {
-        config: {},
+        config: this.loadConfig(),
         pages: {},
         sitemap: [],
         page: null,
@@ -56,11 +57,6 @@ new Vue({
             this.page = this.pathName(this.hashPage()) || 'Not found';
             document.title = this.page + ' - ' + this.config.title;
             this.burgerMenu = false;
-        },
-
-        loadConfigFile() {
-            return fetch('config.json')
-                .then(res => res.json())
         },
 
         loadSiteMap() {
@@ -88,7 +84,6 @@ new Vue({
     },
 
     async created() {
-        this.config     = await this.loadConfigFile();
         this.sitemap    = await this.loadSiteMap();
         this.pages      = await this.loadPages();
         this.footer     = await this.loadMarkdown('footer.md');
