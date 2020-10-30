@@ -32,7 +32,7 @@ new Vue({
             <main v-if="pages[page]" v-html="pages[page].html"></main>
             <p v-else id="message">Page not found</p>
 
-            <footer v-if="layout.footer" v-html="layout.footer.html"></footer>
+            <footer v-html="footer.html"></footer>
         </div>
     `,
 
@@ -40,8 +40,8 @@ new Vue({
         config: {},
         pages: {},
         sitemap: [],
-        page: undefined,
-        layout: {},
+        page: null,
+        footer: null,
         loading: true,
         burgerMenu: false,
     }},
@@ -69,45 +69,30 @@ new Vue({
                 .then(yaml => jsyaml.load(yaml));
         },
 
-        // expects an array of {name, url}
-        loadMarkdownResources(urls) {
-            return Promise.all(urls.map(url => {
-                return fetch(url.url)
-                    .then(res => res.text())
-                    .then(md => yamlFront.loadFront(md))
-                    .then(fm => ({
-                        name: url.name,
-                        meta: fm,
-                        html: marked(fm.__content),
-                    }));
-            }))
-                .then(results => results.map(data => [data.name, data]))
-                .then(pairs => Object.fromEntries(new Map(pairs)));
+        loadMarkdown(url) {
+            return fetch(url)
+                .then(res => res.text())
+                .then(md => yamlFront.loadFront(md))
+                .then(fm => ({meta: fm, html: marked(fm.__content)}));
         },
 
         loadPages() {
-            const ps = this.config.pages;
-            return this.loadMarkdownResources(this.sitemap.map(name => ({
-                name: name,
-                url: ps.fetchPrefix + '/' + this.toPath(name) + '.md',
-            })));
-        },
-
-        loadLayout() {
-            const lo = this.config.layout;
-            return this.loadMarkdownResources(lo.parts.map(part => ({
-                name: part,
-                url: lo.fetchPrefix + '/' + part + '.md',
-            })));
-        },
+            return Promise.all(this.sitemap.map(name => {
+                const path  = '/' + this.toPath(name) + '.md';
+                return this.loadMarkdown(this.config.pages.fetchPrefix + path)
+                    .then(data => ({name: name, ...data}));
+            }))
+                .then(results => results.map(data => [data.name, data]))
+                .then(pairs => Object.fromEntries(new Map(pairs)));
+        }
     },
 
     async created() {
         this.config     = await this.loadConfigFile();
         this.sitemap    = await this.loadSiteMap();
         this.pages      = await this.loadPages();
-        this.layout     = await this.loadLayout();
-        this.loading = false;
+        this.footer     = await this.loadMarkdown('footer.md');
+        this.loading    = false;
 
         // Set up "navigation"
         window.addEventListener('hashchange', this.syncPage);
