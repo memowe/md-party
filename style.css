@@ -7,12 +7,16 @@ html, body, #md-party {
 /* Basic typography */
 
 body {
-    color: #333;
+    color: rgba(0, 0, 0, 0.7);
     font-family: sans-serif;
 }
 
 body a { color: black }
 body a:visited { color: #666 }
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--primary-color);
+}
 
 /* Vertical page parts */
 
@@ -30,6 +34,7 @@ nav {
     position: fixed;
     top: 0;
     background: #eee;
+    background: var(--secondary-color);
     box-shadow: 0 0 5px rgba(0,0,0,.5);
     opacity: .97;
     display: flex;
@@ -60,13 +65,8 @@ nav #nav-title {
     display: inline-block;
     padding: .5em 1em;
     font-weight: bold;
-    color: #999;
+    color: var(--primary-color);
     text-decoration: none;
-    text-shadow: 1px 1px 2px white;
-}
-
-nav a#nav-title {
-    color: black;
 }
 
 /* Navigation: desktop navigation items */
@@ -86,19 +86,26 @@ nav #nav-items li::before {
 nav #nav-items a {
     display: inline-block;
     padding: .5em 1em;
-    color: black;
+    color: rgba(0, 0, 0, 0.8);
     text-decoration: none;
 }
 
 nav #nav-items .active {
-    background: white;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+nav #nav-items .active a {
+    color: rgba(0, 0, 0, 0.5);
 }
 
 /* Navigation: mobile appearance with burger */
 
 @media (max-width: 48em) {
 
-    nav #nav-burger button { display: inline-block }
+    nav #nav-burger button {
+        display: inline-block;
+        background: none;
+    }
 
     nav { flex-wrap: wrap }
 
@@ -144,8 +151,8 @@ main, #message {
 footer {
     margin-top: 0;
     padding: 6em 4em 3em;
-    background: linear-gradient(-2deg, #eee 60%, #f6f6f6 61%, #f6f6f6 75%, white 76%);
+    background: linear-gradient(-2deg, var(--secondary-color) 60%, var(--secondary-light-color) 61%, var(--secondary-light-color) 75%, white 76%);
     text-align: center;
-    color: #999;
+    color: rgba(0, 0, 0, 0.4);
     font-size: .9em;
 }
