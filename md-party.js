@@ -80,7 +80,16 @@ new Vue({
             }))
                 .then(results => results.map(data => [data.name, data]))
                 .then(pairs => Object.fromEntries(new Map(pairs)));
-        }
+        },
+
+        setColorTheme() {
+            ['primary', 'secondary', 'secondary-light'].forEach(col => {
+                document.documentElement.style.setProperty(
+                    `--${col}-color`,
+                    this.config.design.colors[col],
+                );
+            });
+        },
     },
 
     async created() {
@@ -88,6 +97,9 @@ new Vue({
         this.pages      = await this.loadPages();
         this.footer     = await this.loadMarkdown('footer.md');
         this.loading    = false;
+
+        // Inject color theme from config into the root node
+        this.setColorTheme();
 
         // Set up "navigation"
         window.addEventListener('hashchange', this.syncPage);
