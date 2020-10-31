@@ -14,4 +14,21 @@ var mdPartyConfig = {
         // directory or a full URL, for example to raw github file resources.
         "fetchPrefix":  "Content",
     },
+
+    // Regarding the presentation...
+    "design": {
+
+        // Custom design colors...
+        "colors": {
+
+            // Dark primary color, for text highlights on light backgrounds
+            "primary": "sienna",
+
+            // Light secondary color, for navigation bars and footer
+            "secondary": "wheat",
+
+            // Ligher secondary color
+            "secondary-light": "cornsilk",
+        },
+    },
 };
