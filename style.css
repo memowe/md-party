@@ -150,7 +150,7 @@ main, #message {
 
 footer {
     margin-top: 0;
-    padding: 6em 4em 3em;
+    padding: 8em 4em 3em;
     background: linear-gradient(-2deg, var(--secondary-color) 60%, var(--secondary-light-color) 61%, var(--secondary-light-color) 75%, white 76%);
     text-align: center;
     color: rgba(0, 0, 0, 0.4);
