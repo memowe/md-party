@@ -46,7 +46,7 @@ function loadCSSDependencies(config) {
 
     const deps = [
         config.cdnPrefix + 'sanitize.css',
-        [config.fetchPrefix, 'md-party.css'].filter(x => x).join('/'),
+        [config.fetchPrefix, 'dist/md-party.css'].filter(x => x).join('/'),
     ];
 
     const promises = deps.map(href => new Promise((resolve, reject) => {
