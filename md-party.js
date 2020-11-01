@@ -1,8 +1,19 @@
+// Initialize markdown parser
+const sd = new showdown.Converter({
+    metadata: true,
+    parseImgDimensions: true,
+    strikethrough: true,
+    tables: true,
+    simpleLineBreaks: true,
+    openLinksInNewWindow: false,
+});
+
 // Utility methods
 Vue.mixin({methods: {
     loadConfig: ()  => mdPartyConfig,
     toPath:     str => str.replace(/[^a-zäöüß0-9]+/ig, '_'),
     hashPage:   ()  => decodeURI(window.location.hash.substr(1)), // 0: #
+    parseMD:    md  => ({html: sd.makeHtml(md), meta: sd.getMetadata()}),
 }})
 
 // Let's get the party started!
@@ -84,8 +95,7 @@ new Vue({
         loadMarkdown(url) {
             return fetch(url)
                 .then(res => res.text())
-                .then(md => yamlFront.loadFront(md))
-                .then(fm => ({meta: fm, html: marked(fm.__content)}));
+                .then(md => this.parseMD(md));
         },
 
         loadPages() {
