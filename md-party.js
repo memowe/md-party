@@ -34,7 +34,7 @@ new Vue({
                 <span
                     v-else
                     id="nav-title"
-                >{{ config.title }}</span>
+                >{{ title }}</span>
 
                 <div id="nav-burger">
                     <button @click="burgerMenu = ! burgerMenu">&#9776;</button>
@@ -71,7 +71,12 @@ new Vue({
             return this.sitemap.slice(
                 this.config.navigation.useTitleAsHome ? 1 : 0
             );
-        }
+        },
+
+        title() {
+            return (this.page === this.config.title ? '' : this.page + ' - ')
+                + this.config.title;
+        },
     },
 
     methods: {
@@ -82,7 +87,7 @@ new Vue({
 
         syncPage() {
             this.page = this.pathName(this.hashPage()) || 'Not found';
-            document.title = this.page + ' - ' + this.config.title;
+            document.title = this.title;
             this.burgerMenu = false;
         },
 
