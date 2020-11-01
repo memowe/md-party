@@ -1,8 +1,8 @@
 // Utility methods
 Vue.mixin({methods: {
     loadConfig: ()  => mdPartyConfig,
-    toPath:     str => str.replace(/[^a-z0-9]+/i, '_'),
-    hashPage:   ()  => window.location.hash.substr(1), // 0: #
+    toPath:     str => str.replace(/[^a-zäöüß0-9]+/ig, '_'),
+    hashPage:   ()  => decodeURI(window.location.hash.substr(1)), // 0: #
 }})
 
 // Let's get the party started!
