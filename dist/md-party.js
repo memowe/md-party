@@ -1,4 +1,4 @@
-function MDParty(config = {}) {
+async function MDParty(config = {}) {
 
     // Config: mix in defaults
     const defaultConfig = {
@@ -17,12 +17,11 @@ function MDParty(config = {}) {
     config = {...defaultConfig, ...config};
 
     // Action!
-    Promise.resolve()
-        .then(() => loadJSDependencies(config))
-        .then(() => loadCSSDependencies(config))
-        .then(() => customizeVue(config))
-        .then(() => prepareDOM(config))
-        .then(() => letsGetThePartyStarted(config));
+    await loadJSDependencies(config);
+    await loadCSSDependencies(config);
+    customizeVue(config);
+    prepareDOM(config);
+    letsGetThePartyStarted(config);
 };
 
 function loadJSDependencies(config) {
