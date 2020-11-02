@@ -49,7 +49,6 @@ function loadCSS(config) {
 
     // Just replace .js by .css and hope for the best!
     if (jsUrl) {
-        const cssUrl = jsUrl.replace(/js$/, 'css');
         return new Promise((resolve, reject) => {
             const link      = document.createElement('link');
             link.onload     = resolve;
