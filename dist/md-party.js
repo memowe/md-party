@@ -87,6 +87,14 @@ function customizeVue(config) {
 
 function letsGetThePartyStarted(config) {
 
+    // Prepare responsive layout
+    if (! document.querySelector('head meta[name="viewport"]')) {
+        const metaViewport      = document.createElement('meta');
+        metaViewport.name       = 'viewport';
+        metaViewport.content    = 'width=device-width, initial-scale=1.0';
+        document.head.appendChild(metaViewport);
+    }
+
     // Prepare DOM element
     const element   = document.createElement('div');
     element.id      = config.elementId;
