@@ -1,7 +1,8 @@
-function MDParty(id, config = {}) {
+function MDParty(config = {}) {
 
     // Config: mix in defaults
     const defaultConfig = {
+        "elementId":                "md-party-container",
         "title":                    "md-party",
         "fetchPrefix":              null,
         "sitemapYaml":              "sitemap.yml",
@@ -84,11 +85,16 @@ function customizeVue(config) {
     }})
 }
 
-function letsGetThePartyStarted() {
+function letsGetThePartyStarted(config) {
+
+    // Prepare DOM element
+    const element   = document.createElement('div');
+    element.id      = config.elementId;
+    document.body.appendChild(element);
 
     new Vue({
         name: 'MDParty',
-        el: '#app',
+        el: '#' + config.elementId,
 
         template: `
             <p v-if="loading" id="message">Loading...</p>
