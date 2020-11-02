@@ -21,6 +21,7 @@ function MDParty(config = {}) {
         .then(() => loadJSDependencies(config))
         .then(() => loadCSSDependencies(config))
         .then(() => customizeVue(config))
+        .then(() => prepareDOM(config))
         .then(() => letsGetThePartyStarted(config));
 };
 
@@ -85,7 +86,7 @@ function customizeVue(config) {
     }})
 }
 
-function letsGetThePartyStarted(config) {
+function prepareDOM(config) {
 
     // Prepare responsive layout
     if (! document.querySelector('head meta[name="viewport"]')) {
@@ -99,6 +100,9 @@ function letsGetThePartyStarted(config) {
     const element   = document.createElement('div');
     element.id      = config.elementId;
     document.body.appendChild(element);
+}
+
+function letsGetThePartyStarted(config) {
 
     new Vue({
         name: 'MDParty',
