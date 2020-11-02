@@ -6,6 +6,7 @@ function MDParty(id, config = {}) {
         "fetchPrefix":              null,
         "sitemapYaml":              "sitemap.yml",
         "pagesPrefix":              "Content",
+        "layoutPrefix":             "Layout",
         "titleAsHome":              true,
         "primary-color":            "sienna",
         "secondary-color":          "wheat",
@@ -148,16 +149,23 @@ function letsGetThePartyStarted() {
 
         methods: {
 
-            resourceUrl(name) {
-                return [this.config.fetchPrefix, name].filter(x => x).join('/');
+            resourceUrl(...parts) {
+                return [this.config.fetchPrefix, ...parts]
+                    .filter(x => x).join('/');
             },
 
             pageMdUrl(name) {
-                return [
-                    this.config.fetchPrefix,
+                return this.resourceUrl(
                     this.config.pagesPrefix,
-                    this.toPath(name),
-                ].filter(x => x).join('/') + '.md';
+                    this.toPath(name) + '.md'
+                );
+            },
+
+            layoutUrl(name) {
+                return this.resourceUrl(
+                    this.config.layoutPrefix,
+                    this.toPath(name) + '.md'
+                );
             },
 
             pathName(p) {
@@ -204,7 +212,7 @@ function letsGetThePartyStarted() {
         async created() {
             this.sitemap    = await this.loadSiteMap();
             this.pages      = await this.loadPages();
-            this.footer     = await this.loadMarkdown(this.resourceUrl('Layout/footer.md'));
+            this.footer     = await this.loadMarkdown(this.layoutUrl('footer'));
             this.loading    = false;
 
             // Inject color theme from config into the root node
