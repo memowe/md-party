@@ -35,7 +35,6 @@ function loadJSDependencies(config) {
         const script    = document.createElement('script');
         script.onload   = resolve;
         script.onerror  = reject;
-        script.async    = true;
         script.src      = src;
         document.body.appendChild(script);
     }));
