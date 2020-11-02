@@ -1,6 +1,3 @@
----
-answer: 42
----
 # This is Foo
 
 TThis also works! And this works too! This is a long text! This is even longer! This also works! And this works too! This is a long text! This is even longer! This also works! And this works too! This is a long text! This is even longer! This also works! And this works too! This is a long text! This is even longer! This also works! And this works too! This is a long text! This is even longer! This also works! And this works too! This is a long text! This is even longer! his also works! And this works too! This is a long text! This is even longer! This also works! And this works too! This is a long text! This is even longer!
