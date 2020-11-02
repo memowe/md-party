@@ -34,6 +34,7 @@ footer  { flex: 0 0 }
 nav {
     width: 100%;
     position: fixed;
+    z-index: 100;
     top: 0;
     padding: .5em 1.2em;
     background: #eee;
@@ -103,6 +104,10 @@ nav #nav-items .active a {
     color: rgba(0, 0, 0, 0.5);
 }
 
+#burger-nav-items-background {
+    display: none;
+}
+
 /* Navigation: mobile appearance with burger */
 
 @media (max-width: 48em) {
@@ -141,6 +146,17 @@ nav #nav-items .active a {
         outline: none;
         font-size: 1em;
         cursor: pointer;
+    }
+
+    #burger-nav-items-background {
+        display: block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vh;
+        height: 100vh;
+        z-index: 99;
+        background: rgba(0, 0, 0, 0.3);
     }
 }
 

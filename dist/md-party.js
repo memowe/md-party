@@ -133,7 +133,13 @@ function letsGetThePartyStarted(config) {
                             :class="{active: toPath(page) === hashPage()}"
                         ><a :href="'#' + toPath(page)">{{ page }}</a></li>
                     </ul>
+
                 </nav>
+                <div
+                    v-if="burgerMenu"
+                    id="burger-nav-items-background"
+                    @click="burgerMenu = false"
+                ></div>
 
                 <main v-if="pages[page]" v-html="pages[page].html"></main>
                 <p v-else id="message">Page not found</p>
