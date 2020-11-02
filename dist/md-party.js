@@ -1,11 +1,10 @@
-async function MDParty(config = {}) {
+async function MDParty(sitemap, config = {}) {
 
     // Config: mix in defaults
     const defaultConfig = {
         "elementId":                "md-party-container",
         "title":                    "md-party",
         "fetchPrefix":              null,
-        "sitemapYaml":              "sitemap.yml",
         "pagesPrefix":              "Content",
         "layoutPrefix":             "Layout",
         "titleAsHome":              true,
@@ -19,7 +18,7 @@ async function MDParty(config = {}) {
     // Action!
     await loadJSDependencies(config);
     await loadCSSDependencies(config);
-    customizeVue(config);
+    prepareVue(config, sitemap);
     prepareDOM(config);
     letsGetThePartyStarted(config);
 };
@@ -28,7 +27,6 @@ function loadJSDependencies(config) {
 
     const deps = [
         config.cdnPrefix + 'vue/dist/vue.js',
-        config.cdnPrefix + 'js-yaml',
         config.cdnPrefix + 'showdown',
     ];
 
@@ -64,7 +62,7 @@ function loadCSSDependencies(config) {
     return Promise.all(promises);
 }
 
-function customizeVue(config) {
+function prepareVue(config, sitemap) {
 
     // Initialize markdown parser
     const sd = new showdown.Converter({
@@ -78,7 +76,8 @@ function customizeVue(config) {
 
     // Utility methods
     Vue.mixin({methods: {
-        loadConfig: ()  => config,
+        getConfig:  ()  => config,
+        getSitemap: ()  => sitemap,
         toPath:     str => str.replace(/[^a-zäöüß0-9]+/ig, '_'),
         hashPage:   ()  => decodeURI(window.location.hash.substr(1)), // 0: #
         parseMD:    md  => ({html: sd.makeHtml(md), meta: sd.getMetadata()}),
@@ -143,9 +142,9 @@ function letsGetThePartyStarted(config) {
         `,
 
         data() { return {
-            config: this.loadConfig(),
+            config: this.getConfig(),
             pages: {},
-            sitemap: [],
+            sitemap: this.getSitemap(),
             page: null,
             footer: null,
             loading: true,
@@ -195,12 +194,6 @@ function letsGetThePartyStarted(config) {
                 this.burgerMenu = false;
             },
 
-            loadSiteMap() {
-                return fetch(this.resourceUrl(this.config.sitemapYaml))
-                    .then(res => res.text())
-                    .then(yaml => jsyaml.load(yaml));
-            },
-
             loadMarkdown(url) {
                 return fetch(url)
                     .then(res => res.text())
@@ -227,7 +220,6 @@ function letsGetThePartyStarted(config) {
         },
 
         async created() {
-            this.sitemap    = await this.loadSiteMap();
             this.pages      = await this.loadPages();
             this.footer     = await this.loadMarkdown(this.layoutUrl('footer'));
             this.loading    = false;
