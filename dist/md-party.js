@@ -102,7 +102,7 @@ function letsGetThePartyStarted() {
                     <span
                         v-else
                         id="nav-title"
-                    >{{ title }}</span>
+                    >{{ config.title }}</span>
 
                     <div id="nav-burger">
                         <button @click="burgerMenu = ! burgerMenu">&#9776;</button>
