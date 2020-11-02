@@ -44,22 +44,23 @@ function loadJSDependencies(config) {
 
 function loadCSSDependencies(config) {
 
-    const deps = [
-        config.cdnPrefix + 'sanitize.css',
-        [config.fetchPrefix, 'dist/md-party.css'].filter(x => x).join('/'),
-    ];
+    // Try to guess the css location from md-party.js script element
+    const jsUrl = document.querySelector('script[src$="md-party.js"]').src;
 
-    const promises = deps.map(href => new Promise((resolve, reject) => {
-        const link      = document.createElement('link');
-        link.onload    = resolve;
-        link.onerror   = reject;
-        link.async     = true;
-        link.rel       = 'stylesheet';
-        link.href      = href;
-        document.head.appendChild(link);
-    }));
+    // Just replace .js by .css and hope for the best!
+    if (jsUrl) {
+        const cssUrl = jsUrl.replace(/js$/, 'css');
+        return new Promise((resolve, reject) => {
+            const link      = document.createElement('link');
+            link.onload     = resolve;
+            link.onerror    = reject;
+            link.rel        = 'stylesheet';
+            link.href       = jsUrl.replace(/\.js$/, '.css');
+            document.head.appendChild(link);
+        });
+    }
 
-    return Promise.all(promises);
+    console.log(`Couldn't load md-party.css. Please load it by yourself!`);
 }
 
 function prepareVue(config, sitemap) {

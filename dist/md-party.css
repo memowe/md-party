@@ -1,3 +1,5 @@
+@import url('https://cdn.jsdelivr.net/npm/sanitize.css');
+
 html, body, #md-party {
     height: 100vh;
     margin: 0;
