@@ -12,6 +12,7 @@ async function MDParty(sitemap, config = {}) {
         "secondary-color":          "wheat",
         "secondary-light-color":    "cornsilk",
         "cdnPrefix":                "https://cdn.jsdelivr.net/npm/",
+        "vueDebug":                 false,
     };
     config = {...defaultConfig, ...config};
 
@@ -26,7 +27,7 @@ async function MDParty(sitemap, config = {}) {
 function loadJSDependencies(config) {
 
     const deps = [
-        config.cdnPrefix + 'vue/dist/vue.js',
+        config.cdnPrefix + (config.vueDebug ? 'vue/dist/vue.js' : 'vue'),
         config.cdnPrefix + 'showdown',
     ];
 
