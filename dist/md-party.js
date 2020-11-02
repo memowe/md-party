@@ -17,14 +17,14 @@ async function MDParty(sitemap, config = {}) {
     config = {...defaultConfig, ...config};
 
     // Action!
-    await loadJSDependencies(config);
-    await loadCSSDependencies(config);
+    await loadJS(config);
+    await loadCSS(config);
     prepareVue(config, sitemap);
     prepareDOM(config);
     letsGetThePartyStarted(config);
 };
 
-function loadJSDependencies(config) {
+function loadJS(config) {
 
     const deps = [
         config.cdnPrefix + (config.vueDebug ? 'vue/dist/vue.js' : 'vue'),
@@ -42,7 +42,7 @@ function loadJSDependencies(config) {
     return Promise.all(promises);
 }
 
-function loadCSSDependencies(config) {
+function loadCSS(config) {
 
     // Try to guess the css location from md-party.js script element
     const jsUrl = document.querySelector('script[src$="md-party.js"]').src;
