@@ -228,12 +228,20 @@ function letsGetThePartyStarted(config) {
             },
 
             setColorTheme() {
+
+                // Provide custom properties in CSS
                 ['primary', 'secondary', 'secondary-light'].forEach(col => {
                     document.documentElement.style.setProperty(
                         `--${col}-color`,
                         this.config[`${col}-color`],
                     );
                 });
+
+                // Use theme color as user interface on modern browsers
+                const metaTheme     = document.createElement('meta');
+                metaTheme.name      = 'theme-color';
+                metaTheme.content   = this.config['primary-color'];
+                document.head.appendChild(metaTheme);
             },
         },
 
