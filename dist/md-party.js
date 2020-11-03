@@ -1,54 +1,66 @@
 async function MDParty(sitemap, config = {}) {
 
+    // Load javascript dependencies
+    await Promise.all([
+        (config.vueDebug ? 'vue/dist/vue.js' : 'vue'),
+        'showdown',
+    ].map(loadCDNJS));
+
+    // Load md-party JS
+    await loadCSS(config);
+
     // Config: mix in defaults
     const defaultConfig = {
         "elementId":                "md-party-container",
         "title":                    "md-party",
         "fetchPrefix":              null,
         "pagesPrefix":              "Content",
-        "layoutPrefix":             "Layout",
+        "layoutPrefix":             "Content",
         "titleAsHome":              true,
         "primary-color":            "sienna",
         "secondary-color":          "wheat",
         "secondary-light-color":    "cornsilk",
-        "cdnPrefix":                "https://cdn.jsdelivr.net/npm/",
         "vueDebug":                 false,
     };
-    config = {...defaultConfig, ...config};
+    await loadCDNJS('js-yaml');
+    config = {...defaultConfig, ...(await loadYAML(config))};
+
+    // Load sitemap, if neccessary
+    sitemap = await loadYAML(sitemap);
+
 
     // Action!
-    await loadJS(config);
-    await loadCSS(config);
     prepareVue(config, sitemap);
     prepareDOM(config);
     letsGetThePartyStarted(config);
 };
 
-function loadJS(config) {
+function loadYAML(something) {
+    return typeof something === 'object' ? something :
+        fetch(something).then(res => res.text())
+            .then(yaml => jsyaml.load(yaml));
+}
 
-    const deps = [
-        config.cdnPrefix + (config.vueDebug ? 'vue/dist/vue.js' : 'vue'),
-        config.cdnPrefix + 'showdown',
-    ];
-
-    const promises = deps.map(src => new Promise((resolve, reject) => {
+function loadCDNJS(lib) {
+    const CDNPREFIX = 'https://cdn.jsdelivr.net/npm/';
+    return new Promise((resolve, reject) => {
         const script    = document.createElement('script');
         script.onload   = resolve;
         script.onerror  = reject;
-        script.src      = src;
+        script.src      = CDNPREFIX + lib;
         document.body.appendChild(script);
-    }));
-
-    return Promise.all(promises);
+    });
 }
 
-function loadCSS(config) {
+function loadCSS() {
 
     // Try to guess the css location from md-party.js script element
-    const jsUrl = document.querySelector('script[src$="md-party.js"]').src;
+    const try1 = document.querySelector('script[src$="md-party.js"]');
+    const try2 = document.querySelector('script[src$="md-party.min.js"]');
 
     // Just replace .js by .css and hope for the best!
-    if (jsUrl) {
+    if (try1 || try2) {
+        const jsUrl = (try1 ? try1 : try2).src;
         return new Promise((resolve, reject) => {
             const link      = document.createElement('link');
             link.onload     = resolve;

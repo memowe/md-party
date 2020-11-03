@@ -29,7 +29,7 @@ Content:
   </head>
   <body>
 
-    <script src="https://cdn.jsdelivr.net/gh/memowe/md-party@0.1/dist/md-party.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/memowe/md-party@0.1.1/dist/md-party.min.js"></script>
     <script>
       MDParty([
         'Welcome',
@@ -46,11 +46,35 @@ Content:
 </html>
 ```
 
+Both arguments can be replaced with (local or remote) URLs to YAML files:
+
+**`index.html`**:
+
+```html
+MDParty('sitemap.yml', 'config.yml');
+```
+
+**`sitemap.yml`**:
+
+```yaml
+- Welcome
+- Once upon a time
+- Concepts
+- About us
+- Partners
+```
+
+**`config.yml`**:
+
+```yaml
+title: Awesome thing 2000
+```
+
+**Note**: a footer markdown part can be loaded from a file `footer.md`, by default from `Content` as well.
+
 ## Example and further documentation
 
-This repository contains such a [`Content`](Content) directory and [`index.html`](index.html) file, which renders this project's website on GitHub Pages: [mirko.westermeier.de/md-party](https://mirko.westermeier.de/md-party/).
-
-Further documentation is coming soon.
+This repository contains a [documentation](documentation) directory with such a `Content` directory and `index.html` file, which renders this project's documentation website on GitHub Pages: [mirko.westermeier.de/md-party/documentation](https://mirko.westermeier.de/md-party/documentation/).
 
 ## Author and License
 
