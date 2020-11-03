@@ -210,6 +210,7 @@ function letsGetThePartyStarted(config) {
                 this.page = this.pathName(this.hashPage()) || 'Not found';
                 document.title = this.title;
                 this.burgerMenu = false;
+                window.scroll({top: 0, left: 0});
             },
 
             loadMarkdown(url) {
