@@ -32,7 +32,7 @@ async function MDParty(sitemap, config = {}) {
     // Action!
     prepareVue(config, sitemap);
     prepareDOM(config);
-    letsGetThePartyStarted(config);
+    initVue(config);
 };
 
 function loadYAML(something) {
@@ -112,7 +112,7 @@ function prepareDOM(config) {
     document.body.appendChild(element);
 }
 
-function letsGetThePartyStarted(config) {
+function initVue(config) {
 
     new Vue({
         name: 'MDParty',
