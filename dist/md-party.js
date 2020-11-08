@@ -30,8 +30,8 @@ async function MDParty(sitemap, config = {}) {
 
 
     // Action!
-    prepareVue(config, sitemap);
     prepareDOM(config);
+    prepareVue(config, sitemap);
     initVue(config);
 };
 
@@ -74,6 +74,22 @@ function loadCSS() {
     console.log(`Couldn't load md-party.css. Please load it by yourself!`);
 }
 
+function prepareDOM(config) {
+
+    // Prepare responsive layout
+    if (! document.querySelector('head meta[name="viewport"]')) {
+        const metaViewport      = document.createElement('meta');
+        metaViewport.name       = 'viewport';
+        metaViewport.content    = 'width=device-width, initial-scale=1.0';
+        document.head.appendChild(metaViewport);
+    }
+
+    // Prepare DOM element
+    const element   = document.createElement('div');
+    element.id      = config.elementId;
+    document.body.appendChild(element);
+}
+
 function prepareVue(config, sitemap) {
 
     // Initialize markdown parser
@@ -94,22 +110,6 @@ function prepareVue(config, sitemap) {
         hashPage:   ()  => decodeURI(window.location.hash.substr(1)), // 0: #
         parseMD:    md  => ({html: sd.makeHtml(md), meta: sd.getMetadata()}),
     }})
-}
-
-function prepareDOM(config) {
-
-    // Prepare responsive layout
-    if (! document.querySelector('head meta[name="viewport"]')) {
-        const metaViewport      = document.createElement('meta');
-        metaViewport.name       = 'viewport';
-        metaViewport.content    = 'width=device-width, initial-scale=1.0';
-        document.head.appendChild(metaViewport);
-    }
-
-    // Prepare DOM element
-    const element   = document.createElement('div');
-    element.id      = config.elementId;
-    document.body.appendChild(element);
 }
 
 function initVue(config) {
