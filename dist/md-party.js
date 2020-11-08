@@ -1,4 +1,4 @@
-async function MDParty(sitemap, config = {}) {
+export default async function MDParty(sitemap, config = {}) {
 
     // Load javascript dependencies
     await Promise.all([
