@@ -3,11 +3,12 @@
     <head>
         <meta charset="utf-8"/>
         <title></title>
+        <link rel="stylesheet" href="../dist/md-party.css">
     </head>
     <body>
 
-        <script src="../dist/md-party.js"></script>
-        <script>
+        <script type="module">
+            import MDParty from '../dist/md-party.js';
             MDParty('sitemap.yml', 'config.yml');
         </script>
 

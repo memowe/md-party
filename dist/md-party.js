@@ -1,13 +1,9 @@
-async function MDParty(sitemap, config = {}) {
+import ScriptImporter from 'https://cdn.jsdelivr.net/gh/memowe/script-importer@v0.2/script-importer.min.js';
 
-    // Load javascript dependencies
-    await Promise.all([
-        (config.vueDebug ? 'vue/dist/vue.js' : 'vue'),
-        'showdown',
-    ].map(loadCDNJS));
+export default async function MDParty(sitemap, config = {}) {
 
-    // Load md-party JS
-    await loadCSS(config);
+    // Prepare dependency loading from jsDelivr CDN
+    const importer = new ScriptImporter('https://cdn.jsdelivr.net/npm/');
 
     // Config: mix in defaults
     const defaultConfig = {
@@ -22,78 +18,27 @@ async function MDParty(sitemap, config = {}) {
         "secondary-light-color":    "cornsilk",
         "vueDebug":                 false,
     };
-    await loadCDNJS('js-yaml');
+    await importer.import('js-yaml');
     config = {...defaultConfig, ...(await loadYAML(config))};
+
+    // Load other dependencies
+    await importer.import([
+        (config.vueDebug ? 'vue/dist/vue.js' : 'vue'),
+        'showdown'
+    ]);
 
     // Load sitemap, if neccessary
     sitemap = await loadYAML(sitemap);
 
-
     // Action!
-    prepareVue(config, sitemap);
     prepareDOM(config);
-    letsGetThePartyStarted(config);
+    initVue(config, sitemap);
 };
 
 function loadYAML(something) {
     return typeof something === 'object' ? something :
         fetch(something).then(res => res.text())
             .then(yaml => jsyaml.load(yaml));
-}
-
-function loadCDNJS(lib) {
-    const CDNPREFIX = 'https://cdn.jsdelivr.net/npm/';
-    return new Promise((resolve, reject) => {
-        const script    = document.createElement('script');
-        script.onload   = resolve;
-        script.onerror  = reject;
-        script.src      = CDNPREFIX + lib;
-        document.body.appendChild(script);
-    });
-}
-
-function loadCSS() {
-
-    // Try to guess the css location from md-party.js script element
-    const try1 = document.querySelector('script[src$="md-party.js"]');
-    const try2 = document.querySelector('script[src$="md-party.min.js"]');
-
-    // Just replace .js by .css and hope for the best!
-    if (try1 || try2) {
-        const jsUrl = (try1 ? try1 : try2).src;
-        return new Promise((resolve, reject) => {
-            const link      = document.createElement('link');
-            link.onload     = resolve;
-            link.onerror    = reject;
-            link.rel        = 'stylesheet';
-            link.href       = jsUrl.replace(/\.js$/, '.css');
-            document.head.appendChild(link);
-        });
-    }
-
-    console.log(`Couldn't load md-party.css. Please load it by yourself!`);
-}
-
-function prepareVue(config, sitemap) {
-
-    // Initialize markdown parser
-    const sd = new showdown.Converter({
-        metadata: true,
-        parseImgDimensions: true,
-        strikethrough: true,
-        tables: true,
-        simpleLineBreaks: true,
-        openLinksInNewWindow: false,
-    });
-
-    // Utility methods
-    Vue.mixin({methods: {
-        getConfig:  ()  => config,
-        getSitemap: ()  => sitemap,
-        toPath:     str => str.replace(/[^a-zäöüß0-9]+/ig, '_'),
-        hashPage:   ()  => decodeURI(window.location.hash.substr(1)), // 0: #
-        parseMD:    md  => ({html: sd.makeHtml(md), meta: sd.getMetadata()}),
-    }})
 }
 
 function prepareDOM(config) {
@@ -112,7 +57,17 @@ function prepareDOM(config) {
     document.body.appendChild(element);
 }
 
-function letsGetThePartyStarted(config) {
+function initVue(config, sitemap) {
+
+    // Initialize markdown parser
+    const sd = new showdown.Converter({
+        metadata: true,
+        parseImgDimensions: true,
+        strikethrough: true,
+        tables: true,
+        simpleLineBreaks: true,
+        openLinksInNewWindow: false,
+    });
 
     new Vue({
         name: 'MDParty',
@@ -160,9 +115,9 @@ function letsGetThePartyStarted(config) {
         `,
 
         data() { return {
-            config: this.getConfig(),
+            config: config,
             pages: {},
-            sitemap: this.getSitemap(),
+            sitemap: sitemap,
             page: null,
             footer: null,
             loading: true,
@@ -182,6 +137,11 @@ function letsGetThePartyStarted(config) {
         },
 
         methods: {
+
+            // Static utility "methods"
+            toPath:     str => str.replace(/[^a-zäöüß0-9]+/ig, '_'),
+            hashPage:   ()  => decodeURI(window.location.hash.substr(1)), // 0: #
+            parseMD:    md  => ({html: sd.makeHtml(md), meta: sd.getMetadata()}),
 
             resourceUrl(...parts) {
                 return [this.config.fetchPrefix, ...parts]
