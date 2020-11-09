@@ -32,8 +32,7 @@ export default async function MDParty(sitemap, config = {}) {
 
     // Action!
     prepareDOM(config);
-    prepareVue(config, sitemap);
-    initVue(config);
+    initVue(config, sitemap);
 };
 
 function loadYAML(something) {
@@ -58,7 +57,7 @@ function prepareDOM(config) {
     document.body.appendChild(element);
 }
 
-function prepareVue(config, sitemap) {
+function initVue(config, sitemap) {
 
     // Initialize markdown parser
     const sd = new showdown.Converter({
@@ -69,18 +68,6 @@ function prepareVue(config, sitemap) {
         simpleLineBreaks: true,
         openLinksInNewWindow: false,
     });
-
-    // Utility methods
-    Vue.mixin({methods: {
-        getConfig:  ()  => config,
-        getSitemap: ()  => sitemap,
-        toPath:     str => str.replace(/[^a-zäöüß0-9]+/ig, '_'),
-        hashPage:   ()  => decodeURI(window.location.hash.substr(1)), // 0: #
-        parseMD:    md  => ({html: sd.makeHtml(md), meta: sd.getMetadata()}),
-    }})
-}
-
-function initVue(config) {
 
     new Vue({
         name: 'MDParty',
@@ -128,9 +115,9 @@ function initVue(config) {
         `,
 
         data() { return {
-            config: this.getConfig(),
+            config: config,
             pages: {},
-            sitemap: this.getSitemap(),
+            sitemap: sitemap,
             page: null,
             footer: null,
             loading: true,
@@ -150,6 +137,11 @@ function initVue(config) {
         },
 
         methods: {
+
+            // Static utility "methods"
+            toPath:     str => str.replace(/[^a-zäöüß0-9]+/ig, '_'),
+            hashPage:   ()  => decodeURI(window.location.hash.substr(1)), // 0: #
+            parseMD:    md  => ({html: sd.makeHtml(md), meta: sd.getMetadata()}),
 
             resourceUrl(...parts) {
                 return [this.config.fetchPrefix, ...parts]
