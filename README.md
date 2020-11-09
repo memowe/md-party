@@ -26,6 +26,7 @@ Content:
   <head>
     <meta charset="utf-8"/>
     <title></title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/memowe/md-party@0.1.1/dist/md-party.min.css">
   </head>
   <body>
 
