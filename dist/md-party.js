@@ -1,13 +1,9 @@
+import ScriptImporter from 'https://cdn.jsdelivr.net/gh/memowe/script-importer@v0.2/script-importer.min.js';
+
 export default async function MDParty(sitemap, config = {}) {
 
-    // Load javascript dependencies
-    await Promise.all([
-        (config.vueDebug ? 'vue/dist/vue.js' : 'vue'),
-        'showdown',
-    ].map(loadCDNJS));
-
-    // Load md-party JS
-    await loadCSS(config);
+    // Prepare dependency loading from jsDelivr CDN
+    const importer = new ScriptImporter('https://cdn.jsdelivr.net/npm/');
 
     // Config: mix in defaults
     const defaultConfig = {
@@ -22,12 +18,17 @@ export default async function MDParty(sitemap, config = {}) {
         "secondary-light-color":    "cornsilk",
         "vueDebug":                 false,
     };
-    await loadCDNJS('js-yaml');
+    await importer.import('js-yaml');
     config = {...defaultConfig, ...(await loadYAML(config))};
+
+    // Load other dependencies
+    await importer.import([
+        (config.vueDebug ? 'vue/dist/vue.js' : 'vue'),
+        'showdown'
+    ]);
 
     // Load sitemap, if neccessary
     sitemap = await loadYAML(sitemap);
-
 
     // Action!
     prepareDOM(config);
@@ -39,39 +40,6 @@ function loadYAML(something) {
     return typeof something === 'object' ? something :
         fetch(something).then(res => res.text())
             .then(yaml => jsyaml.load(yaml));
-}
-
-function loadCDNJS(lib) {
-    const CDNPREFIX = 'https://cdn.jsdelivr.net/npm/';
-    return new Promise((resolve, reject) => {
-        const script    = document.createElement('script');
-        script.onload   = resolve;
-        script.onerror  = reject;
-        script.src      = CDNPREFIX + lib;
-        document.body.appendChild(script);
-    });
-}
-
-function loadCSS() {
-
-    // Try to guess the css location from md-party.js script element
-    const try1 = document.querySelector('script[src$="md-party.js"]');
-    const try2 = document.querySelector('script[src$="md-party.min.js"]');
-
-    // Just replace .js by .css and hope for the best!
-    if (try1 || try2) {
-        const jsUrl = (try1 ? try1 : try2).src;
-        return new Promise((resolve, reject) => {
-            const link      = document.createElement('link');
-            link.onload     = resolve;
-            link.onerror    = reject;
-            link.rel        = 'stylesheet';
-            link.href       = jsUrl.replace(/\.js$/, '.css');
-            document.head.appendChild(link);
-        });
-    }
-
-    console.log(`Couldn't load md-party.css. Please load it by yourself!`);
 }
 
 function prepareDOM(config) {
