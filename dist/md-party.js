@@ -114,7 +114,7 @@ function initVue(config, sitemap) {
             </div>
         `,
 
-        data() { return {
+        data: () => ({
             config: config,
             pages: {},
             sitemap: sitemap,
@@ -122,7 +122,7 @@ function initVue(config, sitemap) {
             footer: null,
             loading: true,
             burgerMenu: false,
-        }},
+        }),
 
         computed: {
 
