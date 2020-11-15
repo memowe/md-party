@@ -1,4 +1,4 @@
-import ScriptImporter from 'https://cdn.jsdelivr.net/gh/memowe/script-importer@v0.2/script-importer.min.js';
+import ScriptImporter from 'https://cdn.jsdelivr.net/gh/memowe/script-importer@v0.3/script-importer.min.js';
 
 export default async function MDParty(sitemap, config = {}) {
 
@@ -18,11 +18,11 @@ export default async function MDParty(sitemap, config = {}) {
         "secondary-light-color":    "cornsilk",
         "vueDebug":                 false,
     };
-    await importer.import('js-yaml');
+    await importer.load('js-yaml');
     config = {...defaultConfig, ...(await loadYAML(config))};
 
     // Load other dependencies
-    await importer.import([
+    await importer.load([
         (config.vueDebug ? 'vue/dist/vue.js' : 'vue'),
         'showdown'
     ]);
