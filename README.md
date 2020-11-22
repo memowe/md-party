@@ -73,10 +73,6 @@ title: Awesome thing 2000
 
 **Note**: a footer markdown part can be loaded from a file `footer.md`, by default from `Content` as well.
 
-## Example and further documentation
-
-This repository contains a [documentation](documentation) directory with such a `Content` directory and `index.html` file, which renders this project's documentation website on GitHub Pages: [mirko.westermeier.de/md-party/documentation](https://mirko.westermeier.de/md-party/documentation/).
-
 ## Author and License
 
 Copyright (c) [Mirko Westermeier][mirko] ([\@memowe][mgh], [mirko@westermeier.de][mmail])
