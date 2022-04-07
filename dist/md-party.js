@@ -23,7 +23,7 @@ export default async function MDParty(sitemap, config = {}) {
 
     // Load other dependencies
     await importer.load([
-        (config.vueDebug ? 'vue/dist/vue.js' : 'vue'),
+        (config.vueDebug ? 'vue/dist/vue.js' : 'vue') + '@2.6.14',
         'showdown'
     ]);
 
