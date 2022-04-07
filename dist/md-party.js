@@ -2,7 +2,7 @@ async function MDParty(sitemap, config = {}) {
 
     // Load javascript dependencies
     await Promise.all([
-        (config.vueDebug ? 'vue/dist/vue.js' : 'vue'),
+        (config.vueDebug ? 'vue/dist/vue.js' : 'vue') + '@2.6.14',
         'showdown',
     ].map(loadCDNJS));
 
